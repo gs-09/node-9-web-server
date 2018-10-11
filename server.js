@@ -2,6 +2,7 @@ const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
 
+const port = process.env.PORT || 3000;
 var app = express();
 
 hbs.registerPartials(__dirname + '/views/partials');
@@ -9,8 +10,9 @@ app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
 
 app.use((req, res, next) => {
-    var now = new Date().getFullYear();
-    var log = `${now} ${req.method} ${req.url}`;
+    var date = new Date().getFullYear();
+    
+    var log = `${date} ${req.method} ${req.url}`;
     fs.appendFileSync('server.log', log + '\n');
     next();
 });
@@ -52,6 +54,6 @@ app.get('/bad', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log('App is listening on 3000 port number');
+app.listen(port, () => {
+    console.log(`App is listening on ${port} port number`);
 }) ;
